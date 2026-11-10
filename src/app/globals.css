@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+@theme {
+  /* Brand fonts */
+  --font-sans: var(--font-dm-sans);
+  --font-display: var(--font-playfair);
+
+  /* Brand colors */
+  --color-brav-white: #FFFFFF;
+  --color-brav-charcoal: #111827;
+  --color-brav-gold: #C5A880;
+
+  /* Supporting colors */
+  --color-brav-surface: #F9FAFB;
+  --color-brav-border: #E5E7EB;
+  --color-brav-muted: #6B7280;
+  --color-brav-dark: #0B1120;
+
+  /* Functional colors */
+  --color-success: #166534;
+  --color-warning: #92400E;
+  --color-error: #991B1B;
+  --color-info: #1E40AF;
+}
+
+/* Optional: Base layer styles to ensure smooth rendering */
+body {
+  font-family: var(--font-sans), sans-serif;
+  color: var(--color-brav-charcoal);
+  background-color: var(--color-brav-white);
+}
