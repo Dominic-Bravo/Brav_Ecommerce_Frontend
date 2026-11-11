@@ -13,7 +13,23 @@ const nextConfig: NextConfig = {
         hostname: "images.unsplash.com",
         pathname: "/**",
       },
-      // Local Django backend media uploads (HTTP local dev)
+      // Added Unsplash Premium CDN domain
+      {
+        protocol: "https",
+        hostname: "plus.unsplash.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "images.pexels.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "www.pexels.com",
+        pathname: "/**",
+      },
+      // Local Django backend media uploads
       {
         protocol: "http",
         hostname: "127.0.0.1",

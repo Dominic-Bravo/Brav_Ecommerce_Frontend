@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { Filter, SlidersHorizontal, X, ChevronDown, Search } from 'lucide-react';
 import { ProductCard } from './ProductCard';
 import { Product } from '@/api/generated/models/product';
@@ -12,30 +13,33 @@ interface ProductCatalogProps {
 }
 
 export function ProductCatalog({ onAddToCart }: ProductCatalogProps) {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const urlCategory = searchParams.get('category');
+
+  // Derive the active category directly from URL params with a fallback to 'all'
+  const selectedCategory = urlCategory || 'all';
+
   // 1. Local filter & pagination states
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [searchInput, setSearchInput] = useState<string>('');
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [sortBy, setSortBy] = useState<'featured' | 'price-asc' | 'price-desc' | 'name'>('featured');
   const [inStockOnly, setInStockOnly] = useState<boolean>(false);
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState<boolean>(false);
 
-  // 2. Correct hook consumption (passing only valid properties or query parameters)
+  // 2. Correct hook consumption
   const {
     products,
     totalCount,
     hasNextPage,
     hasPreviousPage,
-    isLoading,
+    isLoading, 
     isFetching,
     error,
     setPage,
     setSearchQuery,
     refetchProducts,
   } = useProducts({
-    // If your hook accepts `category`, pass it here. 
-    // Remove `page` and `search` if they trigger options errors, 
-    // and rely on `setPage` and `setSearchQuery` instead.
     category: selectedCategory === 'all' ? undefined : selectedCategory,
   });
 
@@ -44,10 +48,16 @@ export function ProductCatalog({ onAddToCart }: ProductCatalogProps) {
     isLoading: isLoadingCategories,
   } = useCategoryList();
 
-  // Handle Category Selection Change
+  // Handle Category Selection Change by updating the URL query parameters
   const handleCategoryChange = (categorySlug: string) => {
-    setSelectedCategory(categorySlug);
-    setPageNumber(1); // Reset to page 1 on filter change
+    const params = new URLSearchParams(searchParams.toString());
+    if (categorySlug === 'all') {
+      params.delete('category');
+    } else {
+      params.set('category', categorySlug);
+    }
+    router.push(`?${params.toString()}`, { scroll: false });
+    setPageNumber(1);
     setPage(1);
   };
 
@@ -60,8 +70,7 @@ export function ProductCatalog({ onAddToCart }: ProductCatalogProps) {
     setPage(1);
   };
 
-  // 3. Client-side Sort & Availability pipeline 
-  // (Backend now handles search and category filtering across the entire database)
+  // 3. Client-side Sort & Availability pipeline
   const processedProducts = useMemo(() => {
     if (!products) return [];
 
@@ -259,7 +268,6 @@ export function ProductCatalog({ onAddToCart }: ProductCatalogProps) {
         {/* Product Grid Area (9 Cols) */}
         <main className="lg:col-span-9 space-y-8">
           {isLoading ? (
-            /* Loading Skeleton Grid */
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
               {[1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
                 <div key={n} className="aspect-3/4 bg-brav-surface rounded-xl animate-pulse border border-brav-border" />
@@ -271,7 +279,6 @@ export function ProductCatalog({ onAddToCart }: ProductCatalogProps) {
               <p className="text-xs text-brav-muted">Try clearing search inputs or filter toggles.</p>
             </div>
           ) : (
-            /* Product Cards (4 cols Desktop, 2 cols Mobile) */
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
               {processedProducts.map((product, index) => (
                 <ProductCard

@@ -17,9 +17,9 @@ export function HeroSection({
   headline = "Elevate your lifestyle with refined craft & modern engineering.",
   description = "Discover a curated catalog of high-performance tech accessories and luxury lifestyle apparel—crafted for seamless everyday living.",
   primaryBtnText = "Shop Now",
-  primaryBtnHref = "/shop",
+  primaryBtnHref = "/products",
   secondaryBtnText = "Explore Collection",
-  secondaryBtnHref = "/categories",
+  secondaryBtnHref = "/category",
   imageUrl = "https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=1200&auto=format&fit=crop",
   imageAlt = "Brav editorial lifestyle collection preview",
 }: HeroSectionProps) {

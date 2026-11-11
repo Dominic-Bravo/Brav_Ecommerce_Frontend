@@ -9,9 +9,7 @@ import { AddToCartButton } from '../carts/AddToCartButton';
 
 interface ProductCardProps {
   product: Product;
-
-  priority?: boolean; // Add this line
-  // Add the optional onAddToCart callback here
+  priority?: boolean;
   onAddToCart?: (product: Product, e: React.MouseEvent) => void;
   onImageClick?: (product: Product, e: React.MouseEvent) => void;
 }
@@ -41,9 +39,9 @@ export function ProductCard({ product, priority = false, onAddToCart }: ProductC
 
   // Handler to prevent Link navigation when clicking add-to-cart
   const handleAddToCartClick = (e: React.MouseEvent) => {
+    e.preventDefault(); // Prevents the <Link> navigation
+    e.stopPropagation();
     if (onAddToCart) {
-      e.preventDefault(); // Prevents the <Link> navigation
-      e.stopPropagation();
       onAddToCart(product, e);
     }
   };
@@ -78,7 +76,7 @@ export function ProductCard({ product, priority = false, onAddToCart }: ProductC
           </span>
         ) : null}
 
-        {/* Desktop Quick Add */}
+        {/* Desktop Quick Add (Hover overlay) */}
         <div 
           className="absolute inset-x-3 bottom-3 z-10 hidden sm:flex opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300"
           onClick={handleAddToCartClick}
@@ -86,10 +84,10 @@ export function ProductCard({ product, priority = false, onAddToCart }: ProductC
           <AddToCartButton
             productId={product.id}
             disabled={!isAvailable}
-            className="w-full flex items-center justify-center gap-2 bg-brav-charcoal/95 hover:bg-brav-dark text-brav-white text-xs font-semibold rounded-lg shadow-md"
+            className="w-full flex items-center justify-center gap-2 bg-brav-charcoal/95 hover:bg-brav-dark text-brav-white text-xs font-semibold py-2 px-3 rounded-lg shadow-md transition-colors"
           >
             <ShoppingBag className="w-3.5 h-3.5" />
-            Add To Cart
+            <span>Add To Cart</span>
           </AddToCartButton>
         </div>
       </div>
@@ -107,21 +105,23 @@ export function ProductCard({ product, priority = false, onAddToCart }: ProductC
         </div>
 
         {/* Price & Mobile Quick Add */}
-        <div className="pt-2 border-t border-brav-border/60 flex items-center justify-between">
-          <span className="text-sm sm:text-base font-semibold text-brav-charcoal">
+        <div className="pt-2 border-t border-brav-border/60 flex items-center justify-between gap-2">
+          <span className="text-sm sm:text-base font-semibold text-brav-charcoal shrink-0">
             ${numericPrice.toLocaleString('en-US', {
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,
             })}
           </span>
 
-          <div className="sm:hidden" onClick={handleAddToCartClick}>
+          {/* Mobile Quick Add Button */}
+          <div className="sm:hidden shrink-0" onClick={handleAddToCartClick}>
             <AddToCartButton
               productId={product.id}
               disabled={!isAvailable}
-              className="w-8 h-8 flex items-center justify-center rounded-lg bg-brav-surface border border-brav-border text-brav-charcoal p-0"
+              className="h-8 px-2.5 flex items-center justify-center gap-1.5 rounded-lg bg-brav-surface border border-brav-border text-brav-charcoal active:bg-brav-charcoal active:text-brav-white transition-colors text-xs font-semibold"
             >
-              <ShoppingBag className="w-4 h-4" />
+              <ShoppingBag className="w-3.5 h-3.5 shrink-0" />
+              <span>Add</span>
             </AddToCartButton>
           </div>
         </div>

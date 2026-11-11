@@ -13,7 +13,7 @@ interface AnnouncementBarProps {
 export function AnnouncementBar({
   message = "Spring Sale is Live! Get 15% off your first order",
   code = "BRAV15",
-  linkHref = "/shop",
+  linkHref = "/products",
   linkLabel = "Shop Now",
 }: AnnouncementBarProps) {
   const [isVisible, setIsVisible] = useState(true);

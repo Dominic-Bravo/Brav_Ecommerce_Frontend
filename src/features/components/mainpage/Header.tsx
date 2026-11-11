@@ -62,14 +62,13 @@ export function Header() {
         {/* Navigation Links */}
         <nav className="hidden md:flex items-center gap-6">
           <NavLink href="/">Home</NavLink>
-          <NavLink href="/shop">Shop</NavLink>
-          <NavLink href="/categories">Categories</NavLink>
+          <NavLink href="/products">Shop</NavLink>
+          <NavLink href="/category">Categories</NavLink>
           <NavLink href="/about">About Us</NavLink>
         </nav>
 
         {/* Right Action Cluster (Search, Cart, Profile) */}
         <div className="flex items-center gap-3">
-          <SearchBar />
           <CartButton count={0} />
           <ProfileButton />
         </div>
