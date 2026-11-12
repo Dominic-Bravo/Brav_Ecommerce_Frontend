@@ -153,3 +153,9 @@ export const customInstance = async <T>(
 };
 
 export default axiosInstance;
+
+// 👇 Add this line so the generated files can import it
+export type ErrorType<Error> = AxiosError<Error>;
+
+// Optional: Orval sometimes also expects BodyType depending on your config
+export type BodyType<BodyData> = BodyData;

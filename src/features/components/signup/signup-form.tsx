@@ -41,9 +41,11 @@ export function RegisterForm() {
           <svg className="w-4 h-4 text-red-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
           </svg>
-          <p role="alert" className="font-medium leading-relaxed">
-            {error?.response?.data?.message || 'An error occurred during registration.'}
-          </p>
+            <p role="alert" className="font-medium leading-relaxed">
+                {(error?.response?.data as { message?: string; detail?: string })?.message ||
+                (error?.response?.data as { detail?: string })?.detail ||
+                'An error occurred during registration.'}
+            </p>
         </div>
       )}
 
